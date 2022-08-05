@@ -1,0 +1,29 @@
+version: "3"
+services:
+  ts-test-db:
+    image: mariadb
+    container_name: ts-test-db
+    # volumes:
+    #   # Make database persistent
+    #   - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:3306
+
+  app:
+    image: rest-backend
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8080:8080
+    container_name: rest-backend
+    environment:
+      MYSQL_HOST: ts-test-db

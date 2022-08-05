@@ -1,0 +1,11 @@
+FROM node:16
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+ENV ENV=development
+
+RUN npm install
+
+CMD ["npm", "start"]
